@@ -107,6 +107,8 @@
         return;
     }
     
+    NSLog(@"音量变化");
+    
     [self setVolume:[strNowVolume floatValue]];
     if(timeVideoBtn)
     {
@@ -141,17 +143,19 @@
     if (secondsElapsed > 2)
     {
         if (isVideoEnd) {
+            
             secondsElapsed = 0;
             NSLog(@"end video");
             if ([self.delegate respondsToSelector:@selector(volumeButtonEndVideoClick:)]) {
                 [self.delegate volumeButtonEndVideoClick:self];
                 isVideoEnd = NO;
+                isVideoStar = YES;
             }
         }
     }
     else
     {
-        double delayInSeconds = 0.65;
+        double delayInSeconds = 0.55;
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             [self tackPhoto];
         });

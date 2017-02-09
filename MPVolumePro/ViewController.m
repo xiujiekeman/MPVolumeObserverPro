@@ -26,15 +26,12 @@
 -(void) volumeButtonCameraClick:(MPVolumeObserver *) button
 {
     NSLog(@"+take Photo+");
-    
 }
-
 
 -(void) volumeButtonStarVideoClick:(MPVolumeObserver *) button
 {
     NSLog(@"+start video+");
 }
-
 
 -(void) volumeButtonEndVideoClick:(MPVolumeObserver *) button
 {
