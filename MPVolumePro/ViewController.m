@@ -19,21 +19,24 @@
     [MPVolumeObserverPro sharedInstance].delegate = self;
     [[MPVolumeObserverPro sharedInstance]startObserveVolumeChangeEvents];
 
-    
+
+    /*
+     [[MPVolumeObserverPro sharedInstance]stopObserveVolumeChangeEvents];
+     */
 }
 
 
--(void) volumeButtonCameraClick:(MPVolumeObserver *) button
+-(void) volumeButtonCameraClick:(MPVolumeObserverPro *) button
 {
     NSLog(@"+take Photo+");
 }
 
--(void) volumeButtonStarVideoClick:(MPVolumeObserver *) button
+-(void) volumeButtonStarVideoClick:(MPVolumeObserverPro *) button
 {
     NSLog(@"+start video+");
 }
 
--(void) volumeButtonEndVideoClick:(MPVolumeObserver *) button
+-(void) volumeButtonEndVideoClick:(MPVolumeObserverPro *) button
 {
     NSLog(@"+end video+");
 }

@@ -6,11 +6,11 @@
 #import <MediaPlayer/MediaPlayer.h>
 #import <AVFoundation/AVFoundation.h>
 
-@class MPVolumeObserver;
+@class MPVolumeObserverPro;
 @protocol MPVolumeObserverProtocol <NSObject>
--(void) volumeButtonCameraClick:(MPVolumeObserver *) button;
--(void) volumeButtonStarVideoClick:(MPVolumeObserver *) button;
--(void) volumeButtonEndVideoClick:(MPVolumeObserver *) button;
+-(void) volumeButtonCameraClick:(MPVolumeObserverPro *) button;
+-(void) volumeButtonStarVideoClick:(MPVolumeObserverPro *) button;
+-(void) volumeButtonEndVideoClick:(MPVolumeObserverPro *) button;
 
 
 @end

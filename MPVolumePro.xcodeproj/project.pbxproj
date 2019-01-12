@@ -14,9 +14,9 @@
 		1862D5CF1E4AC336000FD71A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1862D5CD1E4AC336000FD71A /* LaunchScreen.storyboard */; };
 		1862D5DA1E4AC336000FD71A /* MPVolumeProTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 1862D5D91E4AC336000FD71A /* MPVolumeProTests.m */; };
 		1862D5E51E4AC336000FD71A /* MPVolumeProUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 1862D5E41E4AC336000FD71A /* MPVolumeProUITests.m */; };
-		1862D5FB1E4B215E000FD71A /* MPVolumeObserverPro.m in Sources */ = {isa = PBXBuildFile; fileRef = 1862D5F91E4B215E000FD71A /* MPVolumeObserverPro.m */; };
 		1862D6001E4B4011000FD71A /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1862D5FF1E4B4011000FD71A /* AudioToolbox.framework */; };
 		1862D6021E4B404A000FD71A /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1862D6011E4B404A000FD71A /* MediaPlayer.framework */; };
+		D09F343421E7377400CA91FB /* MPVolumeObserverPro.m in Sources */ = {isa = PBXBuildFile; fileRef = D09F343321E7377400CA91FB /* MPVolumeObserverPro.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -52,10 +52,10 @@
 		1862D5E01E4AC336000FD71A /* MPVolumeProUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MPVolumeProUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		1862D5E41E4AC336000FD71A /* MPVolumeProUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MPVolumeProUITests.m; sourceTree = "<group>"; };
 		1862D5E61E4AC336000FD71A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		1862D5F91E4B215E000FD71A /* MPVolumeObserverPro.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MPVolumeObserverPro.m; sourceTree = "<group>"; };
-		1862D5FA1E4B215E000FD71A /* MPVolumeObserverPro.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MPVolumeObserverPro.h; sourceTree = "<group>"; };
 		1862D5FF1E4B4011000FD71A /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		1862D6011E4B404A000FD71A /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
+		D09F343221E7377400CA91FB /* MPVolumeObserverPro.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPVolumeObserverPro.h; path = Class/MPVolumeObserverPro.h; sourceTree = "<group>"; };
+		D09F343321E7377400CA91FB /* MPVolumeObserverPro.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MPVolumeObserverPro.m; path = Class/MPVolumeObserverPro.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -109,7 +109,8 @@
 		1862D5BE1E4AC336000FD71A /* MPVolumePro */ = {
 			isa = PBXGroup;
 			children = (
-				1862D5F21E4AD2C9000FD71A /* Class */,
+				D09F343221E7377400CA91FB /* MPVolumeObserverPro.h */,
+				D09F343321E7377400CA91FB /* MPVolumeObserverPro.m */,
 				1862D5C21E4AC336000FD71A /* AppDelegate.h */,
 				1862D5C31E4AC336000FD71A /* AppDelegate.m */,
 				1862D5C51E4AC336000FD71A /* ViewController.h */,
@@ -146,15 +147,6 @@
 				1862D5E61E4AC336000FD71A /* Info.plist */,
 			);
 			path = MPVolumeProUITests;
-			sourceTree = "<group>";
-		};
-		1862D5F21E4AD2C9000FD71A /* Class */ = {
-			isa = PBXGroup;
-			children = (
-				1862D5FA1E4B215E000FD71A /* MPVolumeObserverPro.h */,
-				1862D5F91E4B215E000FD71A /* MPVolumeObserverPro.m */,
-			);
-			path = Class;
 			sourceTree = "<group>";
 		};
 		1862D5FE1E4B4010000FD71A /* Frameworks */ = {
@@ -233,7 +225,7 @@
 				TargetAttributes = {
 					1862D5BB1E4AC336000FD71A = {
 						CreatedOnToolsVersion = 8.2.1;
-						DevelopmentTeam = SMA328KK58;
+						DevelopmentTeam = 58Q93A4JF8;
 						ProvisioningStyle = Automatic;
 					};
 					1862D5D41E4AC336000FD71A = {
@@ -301,7 +293,7 @@
 			files = (
 				1862D5C71E4AC336000FD71A /* ViewController.m in Sources */,
 				1862D5C41E4AC336000FD71A /* AppDelegate.m in Sources */,
-				1862D5FB1E4B215E000FD71A /* MPVolumeObserverPro.m in Sources */,
+				D09F343421E7377400CA91FB /* MPVolumeObserverPro.m in Sources */,
 				1862D5C11E4AC336000FD71A /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -441,11 +433,11 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = SMA328KK58;
+				DEVELOPMENT_TEAM = 58Q93A4JF8;
 				INFOPLIST_FILE = MPVolumePro/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.xiujiekeman.MPVolumePr;
+				PRODUCT_BUNDLE_IDENTIFIER = com.xiujiekeman.MPVolumeP;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -454,11 +446,11 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = SMA328KK58;
+				DEVELOPMENT_TEAM = 58Q93A4JF8;
 				INFOPLIST_FILE = MPVolumePro/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.xiujiekeman.MPVolumePr;
+				PRODUCT_BUNDLE_IDENTIFIER = com.xiujiekeman.MPVolumeP;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;

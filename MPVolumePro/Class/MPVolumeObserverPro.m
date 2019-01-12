@@ -9,12 +9,15 @@
     BOOL            _suspended;
     int             Isfirst;
     NSString       *strNowVolume;
-    NSTimer        *timeVideoBtn;
-    NSInteger       secondsElapsed;
+    NSTimer        *timeTouchVideo;
+    
+    NSInteger       secondsLastElapsed;
+    NSInteger       secondsElapsed;     //定时器比较
+    BOOL            defaultEnter;
     BOOL            isVideoStar;
     BOOL            isVideoEnd;
     
-    float           fVolume;
+    float           fVolume;  //默认声音大小
 }
 
 @end
@@ -28,9 +31,9 @@
     dispatch_once(&onceToken, ^{
         instance = [[MPVolumeObserverPro alloc] init];
     });
-    
     return instance;
 }
+
 
 -(id)init
 {
@@ -40,6 +43,8 @@
         _suspended = NO;
         Isfirst = 0;
         secondsElapsed = 0;
+        defaultEnter = YES;
+        secondsLastElapsed = 0;
         CGRect frame = CGRectMake(0, -100, 0, 0);
         _volumeView = [[MPVolumeView alloc] initWithFrame:frame];
         [[UIApplication sharedApplication].windows[0] addSubview:_volumeView];
@@ -48,6 +53,8 @@
     return self;
 }
 
+
+//初始化
 -(void)startObserveVolumeChangeEvents
 {
     _suspended = NO;
@@ -55,7 +62,14 @@
     isVideoEnd = NO;
     fVolume = [self volume];
     [self startObserve];
+    timeTouchVideo = [NSTimer scheduledTimerWithTimeInterval:0.1
+                                                      target:self
+                                                    selector:@selector(onTimeFire)
+                                                    userInfo:nil
+                                                     repeats:YES];
+    [timeTouchVideo setFireDate:[NSDate distantFuture]];
 }
+
 
 -(void) startObserve;
 {
@@ -82,12 +96,12 @@
     {
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(suspendObserveVolumeChangeEvents:)
-                                                     name:UIApplicationWillResignActiveNotification     // -> Inactive
+                                                     name:UIApplicationWillResignActiveNotification     // -> 离开前台
                                                    object:nil];
         
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(resumeObserveVolumeButtonEvents:)
-                                                     name:UIApplicationDidBecomeActiveNotification      // <- Active
+                                                     name:UIApplicationDidBecomeActiveNotification      // <- 进入前台
                                                    object:nil];
         
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(volumeChangeNotification:)
@@ -95,76 +109,72 @@
     }
 }
 
+
+//声音改变回调
 -(void) volumeChangeNotification:(NSNotification *) no
 {
     static id sender = nil;
     if (sender == nil && no.object) {
         sender = no.object;
     }
-    
     NSString * NowChangeVolume = [[ NSString stringWithFormat:@"%f",[[no.userInfo objectForKey:@"AudioVolume"] floatValue] ] substringToIndex:4];
     if (no.object != sender || [NowChangeVolume isEqualToString: strNowVolume]) {
         return;
     }
-    
-    NSLog(@"音量变化");
-    
-    [self setVolume:[strNowVolume floatValue]];
-    if(timeVideoBtn)
-    {
-        if(secondsElapsed == 1)
-        {
-            if (isVideoStar)
-            {
-                NSLog(@"start video");
-                if ([self.delegate respondsToSelector:@selector(volumeButtonStarVideoClick:)]) {
-                    [self.delegate volumeButtonStarVideoClick:self];
-                }
-                isVideoStar = NO;
-                isVideoEnd = YES;
-            }
-        }
-        secondsElapsed ++;
-        [timeVideoBtn invalidate];
+    if (defaultEnter) {
+        defaultEnter = NO;
+        return;
     }
-    
-    timeVideoBtn = [NSTimer scheduledTimerWithTimeInterval:0.2
-                                                    target:self
-                                                  selector:@selector(onTimeFire)
-                                                  userInfo:nil
-                                                   repeats:NO];
+    NSLog(@"音量变化");
+    [self setVolume:[strNowVolume floatValue]];
+    secondsElapsed++;
+    if (secondsElapsed == 2) {
+        //开始录制
+        NSLog(@"开始录制");
+        [timeTouchVideo setFireDate:[NSDate date]];
+    }else{
+        if (secondsElapsed>2) {
+            NSLog(@"录制中");
+        }else{
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.65 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                if (secondsElapsed==2) {
+                    NSLog(@"进不来");
+                }else if(secondsElapsed==1){
+                    //拍照
+                    NSLog(@"拍照");
+                    secondsElapsed = 0;
+                }else{
+                    //录制
+                }
+            });
+
+        }
+    }
 }
 
+
+//定期加结束
 -(void)onTimeFire
 {
-    
-    timeVideoBtn = nil;
-    
-    if (secondsElapsed > 2)
-    {
-        if (isVideoEnd) {
-            
+    NSLog(@"-------%ld=======%ld",secondsLastElapsed,secondsElapsed);
+    if (secondsLastElapsed == secondsElapsed) {
+        NSLog(@"end video");
+        if ([self.delegate respondsToSelector:@selector(volumeButtonEndVideoClick:)]) {
+            [self.delegate volumeButtonEndVideoClick:self];
+            isVideoEnd = NO;
+            isVideoStar = YES;
+            [timeTouchVideo setFireDate:[NSDate distantFuture]];
             secondsElapsed = 0;
-            NSLog(@"end video");
-            if ([self.delegate respondsToSelector:@selector(volumeButtonEndVideoClick:)]) {
-                [self.delegate volumeButtonEndVideoClick:self];
-                isVideoEnd = NO;
-                isVideoStar = YES;
-            }
+            secondsLastElapsed = 0;
+
         }
     }
-    else
-    {
-        double delayInSeconds = 0.55;
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            [self tackPhoto];
-        });
-    }
+    secondsLastElapsed++;
+    
 }
 
 
-
-
+//拍照
 - (void)tackPhoto
 {
     if (isVideoStar)
@@ -187,6 +197,8 @@
     }
 }
 
+
+
 - (void)resumeObserveVolumeButtonEvents:(NSNotification *)notification
 {
     if(_suspended)
@@ -196,6 +208,8 @@
         _suspended = NO; // Call last!
     }
 }
+
+
 
 -(void)stopObserveVolumeChangeEvents
 {
@@ -207,7 +221,7 @@
     [[NSNotificationCenter defaultCenter]removeObserver:self name:@"SystemVolumeDidChange" object:nil];
     
     Isfirst = 0;
-    [timeVideoBtn invalidate];
+    //    [timeTouchVideo invalidate];
     secondsElapsed = 0;
     _isObservingVolumeButtons = NO;
     [[AVAudioSession sharedInstance] setActive:NO error: nil];
@@ -220,6 +234,7 @@
     CGFloat volume = audioSession.outputVolume;
     return volume;
 }
+
 
 - (void)setVolume:(float)newVolume
 {
@@ -237,6 +252,8 @@
     [volumeViewSlider setValue:newVolume animated:YES];
     [volumeViewSlider sendActionsForControlEvents:UIControlEventTouchUpInside];
 }
+
+
 -(void)dealloc
 {
     _suspended = NO;
